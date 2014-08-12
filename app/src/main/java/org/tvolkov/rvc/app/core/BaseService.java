@@ -20,6 +20,9 @@ abstract public class BaseService extends IntentService {
 
 
     private static final int MAX_THREADS = 5;
+    public static final String EXTRA_REQUEST_ID = "org.tvolkov.rvc.app.REQUEST_ID";
+    public static final String EXTRA_RECEIVER = "org.tvolkov.rvc.app.RECEIVER";
+    public static final String EXTRA_STATUS_DATA = "org.tvolkov.rvc.app.STATUS_DATA";
 
     private ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREADS);
 

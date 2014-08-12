@@ -28,7 +28,7 @@ public class UserSettings {
         return sp.getString(SHARED_PREFS_PORT, null);
     }
 
-    public static void setPassword(final Context context, final String portNumber){
+    public static void setPort(final Context context, final String portNumber){
         SharedPreferences sp = context.getSharedPreferences(SHARED_PREFS_FILENAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(SHARED_PREFS_PORT, portNumber);
