@@ -14,7 +14,6 @@ import java.util.*;
 public class CommonActionServiceHelper {
     private static final String EXTRA_REQUEST_ID = "org.tvolkov.rvc.EXTRA_REQUEST_ID";
     private static final int MAX_REQUEST_ID = 1000;
-    private static CommonActionServiceHelper INSTANCE = null;
     private Random random = new Random();
     private SparseArray<Intent> processingIntents = new SparseArray<Intent>();
     private Set<AfterRequestHook> listeners = Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<AfterRequestHook, Boolean>()));
@@ -27,26 +26,14 @@ public class CommonActionServiceHelper {
         this.receiver = new CommonResultReceiver(new Handler());
     }
 
-    public static CommonActionServiceHelper getInstance(Context c){
-        Log.d(TAG, "get INstance");
-        if (INSTANCE == null){
-            synchronized (INSTANCE) {
-                if (INSTANCE == null){
-                    INSTANCE = new CommonActionServiceHelper(c);
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
     public int getStatus(){
         final int requestId = random.nextInt(MAX_REQUEST_ID);
         final Intent intent = new Intent(context, CommonActionService.class);
-        intent.putExtra(CommonActionService.EXTRA_HOST, UserSettings.getHost(context));
-        intent.putExtra(CommonActionService.EXTRA_PORT, UserSettings.getPort(context));
-        intent.putExtra(CommonActionService.SERVICE_ACTION, CommonActionService.SERVICE_ACTION_GET_STATUS);
-        intent.putExtra(CommonActionService.EXTRA_REQUEST_ID, requestId);
-        intent.putExtra(CommonActionService.EXTRA_RECEIVER, receiver);
+        intent.putExtra(BaseService.EXTRA_HOST, UserSettings.getHost(context));
+        intent.putExtra(BaseService.EXTRA_PORT, UserSettings.getPort(context));
+        intent.putExtra(BaseService.SERVICE_ACTION, CommonActionService.SERVICE_ACTION_GET_STATUS);
+        intent.putExtra(BaseService.EXTRA_REQUEST_ID, requestId);
+        intent.putExtra(BaseService.EXTRA_RECEIVER, receiver);
         context.startService(intent);
         processingIntents.append(requestId, intent);
         return requestId;

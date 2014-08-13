@@ -23,6 +23,9 @@
                       android:value=".InitActivity"
                   </meta-data>-->
         </activity>
+        <service
+                android:exported="false"
+                android:name=".core.CommonActionService"/>
     </application>
 
 </manifest>

@@ -14,6 +14,10 @@ public class CommonActionService extends BaseService {
         super(name);
     }
 
+    public CommonActionService(){
+
+    }
+
     @Override
     protected void onHandleIntent(final Intent intent) {
         final int action = intent.getIntExtra(SERVICE_ACTION, -1);

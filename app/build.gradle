@@ -14,7 +14,7 @@ repositories {
 
 android {
     compileSdkVersion 15
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     packagingOptions {
         exclude 'META-INF/LICENSE'
@@ -41,6 +41,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:appcompat-v7:19.+'
-    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+    compile 'org.springframework.android:spring-android-rest-template:1.0.0.RELEASE'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.1.3'
 }

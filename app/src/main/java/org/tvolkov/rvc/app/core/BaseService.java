@@ -35,6 +35,10 @@ abstract public class BaseService extends IntentService {
         super(name);
     }
 
+    public BaseService(){
+        super("");
+    }
+
     @Override
     public void onCreate(){
 

@@ -18,9 +18,15 @@ import static org.tvolkov.rvc.app.core.BaseService.EXTRA_PORT;
 public class InitActivity extends Activity {
 
     public static final String TAG = "InitActivity";
+
+    private CommonActionServiceHelper commonActionServiceHelper;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        commonActionServiceHelper = new CommonActionServiceHelper(this);
+
         setContentView(R.layout.activity_init);
 
         String host = UserSettings.getHost(this);
@@ -40,15 +46,15 @@ public class InitActivity extends Activity {
         UserSettings.setHost(this, host.getText().toString());
         UserSettings.setPort(this, port.getText().toString());
         Log.d(TAG, "adding after request hook");
-        CommonActionServiceHelper.getInstance(this).addAfterRequestHook(requestHandler);
-        CommonActionServiceHelper.getInstance(this).getStatus();
-        CommonActionServiceHelper.getInstance(this).removeAfterRequestHook(requestHandler);
+        commonActionServiceHelper.addAfterRequestHook(requestHandler);
+        commonActionServiceHelper.getStatus();
     }
 
     private AfterRequestHook requestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
             System.out.println("test");
+            commonActionServiceHelper.removeAfterRequestHook(requestHandler);
         }
     };
 }
