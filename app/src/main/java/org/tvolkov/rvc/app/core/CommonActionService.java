@@ -33,20 +33,17 @@ public class CommonActionService extends BaseService {
     }
 
     private void handleSuccess(final Bundle result, final Intent intent) {
-
+        handleResult(result, intent, ServiceResult.SUCCESS.ordinal());
     }
 
     private void handleError(final Bundle result, final Intent intent){
-
+        handleResult(result, intent, ServiceResult.ERROR.ordinal());
     }
 
     private void handleResult(final Bundle data, final Intent intent, final int resultCode){
-        ResultReceiver receiver = (ResultReceiver) intent.getParcelableExtra(EXTRA_RECEIVER);
+        ResultReceiver receiver = intent.getParcelableExtra(EXTRA_RECEIVER);
         if (receiver != null) {
-
-
             data.putInt(EXTRA_REQUEST_ID, intent.getIntExtra(EXTRA_REQUEST_ID, -1));
-
             receiver.send(resultCode, data);
         }
     }

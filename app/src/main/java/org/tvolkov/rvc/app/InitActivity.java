@@ -33,9 +33,13 @@ public class InitActivity extends Activity {
         String port = UserSettings.getPort(this);
         if (host != null){
             ((EditText)findViewById(R.id.init_host)).setText(host);
+        } else {//debug
+            ((EditText)findViewById(R.id.init_host)).setText("192.168.1.2");
         }
         if (port != null){
             ((EditText)findViewById(R.id.init_port)).setText(port);
+        } else {//debug
+            ((EditText)findViewById(R.id.init_port)).setText("13579");
         }
     }
 
