@@ -24,6 +24,8 @@ abstract public class BaseService extends IntentService {
     public static final String EXTRA_RECEIVER = "org.tvolkov.rvc.app.RECEIVER";
     public static final String EXTRA_STATUS_DATA = "org.tvolkov.rvc.app.STATUS_DATA";
 
+    public static final String EXTRA_SERVICE_STATUS = "org.tvolkov.rvc.app.SERVICE_STATUS";
+
     private ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREADS);
 
     /**

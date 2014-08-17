@@ -7,3 +7,4 @@
 app/src/main/gen/
 res/
 *.log
+target/

@@ -26,7 +26,6 @@
         <service
                 android:exported="false"
                 android:name=".core.CommonActionService"/>
-        <uses-permission android:name="android.permission.INTERNET"/>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

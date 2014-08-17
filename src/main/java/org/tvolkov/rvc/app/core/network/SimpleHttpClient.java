@@ -7,7 +7,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.springframework.web.client.RestClientException;
 import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -69,7 +68,7 @@ public class SimpleHttpClient {
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() != HttpStatus.SC_OK){
                 //TODO need to handle 302 response here, i.e. to do redirect
-                throw new RestClientException(status.toString());
+                throw new Exception(status.toString());
             }
 
             HttpEntity entity = response.getEntity();

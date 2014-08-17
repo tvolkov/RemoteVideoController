@@ -6,9 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import org.tvolkov.rvc.app.core.AfterRequestHook;
-import org.tvolkov.rvc.app.core.CommonActionService;
-import org.tvolkov.rvc.app.core.CommonActionServiceHelper;
+import android.widget.Toast;
+import org.tvolkov.rvc.app.core.*;
 import org.tvolkov.rvc.app.util.UserSettings;
 
 import static org.tvolkov.rvc.app.core.BaseService.EXTRA_HOST;
@@ -57,7 +56,10 @@ public class InitActivity extends Activity {
     private AfterRequestHook requestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            System.out.println("test");
+
+            if (result == ServiceResult.ERROR.ordinal()){
+                Toast.makeText(InitActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_LONG).show();
+            }
             commonActionServiceHelper.removeAfterRequestHook(requestHandler);
         }
     };
