@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import org.tvolkov.rvc.app.R;
 
+import javax.print.attribute.standard.Media;
 import java.io.IOException;
 import java.util.Formatter;
 
@@ -32,12 +33,27 @@ public class CommonActionService extends BaseService {
         try {
             switch (action) {
                 case SERVICE_ACTION_GET_STATUS:
-                    result = VlcPlayerRestTemplates.getStatus(host, port);
+                    //result = VlcPlayerRestTemplates.getStatus(host, port);
+                    result = MediaPlayerClassicRestTemplates.getStatus(host, port);
                     handleSuccess(result, intent);
                     break;
                 case SERVICE_ACTION_GET_PLAYLIST:
                 case SERVICE_ACTION_PLAY_NEXT:
+                    result = MediaPlayerClassicRestTemplates.playNext(host, port);
+                    handleSuccess(result, intent);
+                    break;
                 case SERVICE_ACTION_PLAY_PREV:
+                    result = MediaPlayerClassicRestTemplates.playPrev(host, port);
+                    handleSuccess(result, intent);
+                    break;
+                case SERVICE_ACTION_PAUSE:
+                    result = MediaPlayerClassicRestTemplates.pause(host, port);
+                    handleSuccess(result, intent);
+                    break;
+                case SERVICE_ACTION_PLAY:
+                    result = MediaPlayerClassicRestTemplates.play(host, port);
+                    handleSuccess(result, intent);
+                    break;
                 default:
             }
         } /*catch (IOException e){

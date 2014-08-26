@@ -14,6 +14,8 @@ abstract public class BaseService extends IntentService {
     public static final int SERVICE_ACTION_GET_PLAYLIST = 1;
     public static final int SERVICE_ACTION_PLAY_NEXT = 2;
     public static final int SERVICE_ACTION_PLAY_PREV = 3;
+    public static final int SERVICE_ACTION_PAUSE = 4;
+    public static final int SERVICE_ACTION_PLAY = 5;
 
     public static final String EXTRA_HOST = "org.tvolkov.rvc.app.HOST";
     public static final String EXTRA_PORT = "org.tvolkov.rvc.app.PORT";
@@ -23,6 +25,7 @@ abstract public class BaseService extends IntentService {
     public static final String EXTRA_REQUEST_ID = "org.tvolkov.rvc.app.REQUEST_ID";
     public static final String EXTRA_RECEIVER = "org.tvolkov.rvc.app.RECEIVER";
     public static final String EXTRA_STATUS_DATA = "org.tvolkov.rvc.app.STATUS_DATA";
+    public static final String EXTRA_RESPONSE = "org.tvolkov.rvc.app.RESPONSE";
 
     public static final String EXTRA_SERVICE_STATUS = "org.tvolkov.rvc.app.SERVICE_STATUS";
 

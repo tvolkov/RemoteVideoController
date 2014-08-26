@@ -28,4 +28,8 @@
                 android:name=".core.CommonActionService"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-sdk android:minSdkVersion="15"
+              android:targetSdkVersion="15"
+              android:maxSdkVersion="20" />
 </manifest>

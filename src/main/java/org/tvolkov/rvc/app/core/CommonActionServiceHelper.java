@@ -39,6 +39,58 @@ public class CommonActionServiceHelper {
         return requestId;
     }
 
+    public int pause(){
+        final int requestId = random.nextInt(MAX_REQUEST_ID);
+        final Intent intent = new Intent(context, CommonActionService.class);
+        intent.putExtra(BaseService.EXTRA_HOST, UserSettings.getHost(context));
+        intent.putExtra(BaseService.EXTRA_PORT, UserSettings.getPort(context));
+        intent.putExtra(BaseService.SERVICE_ACTION, CommonActionService.SERVICE_ACTION_PAUSE);
+        intent.putExtra(BaseService.EXTRA_REQUEST_ID, requestId);
+        intent.putExtra(BaseService.EXTRA_RECEIVER, receiver);
+        context.startService(intent);
+        processingIntents.append(requestId, intent);
+        return requestId;
+    }
+
+    public int play(){
+        final int requestId = random.nextInt(MAX_REQUEST_ID);
+        final Intent intent = new Intent(context, CommonActionService.class);
+        intent.putExtra(BaseService.EXTRA_HOST, UserSettings.getHost(context));
+        intent.putExtra(BaseService.EXTRA_PORT, UserSettings.getPort(context));
+        intent.putExtra(BaseService.SERVICE_ACTION, CommonActionService.SERVICE_ACTION_PLAY);
+        intent.putExtra(BaseService.EXTRA_REQUEST_ID, requestId);
+        intent.putExtra(BaseService.EXTRA_RECEIVER, receiver);
+        context.startService(intent);
+        processingIntents.append(requestId, intent);
+        return requestId;
+    }
+
+    public int playPrev(){
+        final int requestId = random.nextInt(MAX_REQUEST_ID);
+        final Intent intent = new Intent(context, CommonActionService.class);
+        intent.putExtra(BaseService.EXTRA_HOST, UserSettings.getHost(context));
+        intent.putExtra(BaseService.EXTRA_PORT, UserSettings.getPort(context));
+        intent.putExtra(BaseService.SERVICE_ACTION, CommonActionService.SERVICE_ACTION_PLAY_PREV);
+        intent.putExtra(BaseService.EXTRA_REQUEST_ID, requestId);
+        intent.putExtra(BaseService.EXTRA_RECEIVER, receiver);
+        context.startService(intent);
+        processingIntents.append(requestId, intent);
+        return requestId;
+    }
+
+    public int playNext(){
+        final int requestId = random.nextInt(MAX_REQUEST_ID);
+        final Intent intent = new Intent(context, CommonActionService.class);
+        intent.putExtra(BaseService.EXTRA_HOST, UserSettings.getHost(context));
+        intent.putExtra(BaseService.EXTRA_PORT, UserSettings.getPort(context));
+        intent.putExtra(BaseService.SERVICE_ACTION, CommonActionService.SERVICE_ACTION_PLAY_NEXT);
+        intent.putExtra(BaseService.EXTRA_REQUEST_ID, requestId);
+        intent.putExtra(BaseService.EXTRA_RECEIVER, receiver);
+        context.startService(intent);
+        processingIntents.append(requestId, intent);
+        return requestId;
+    }
+
     public class CommonResultReceiver extends ResultReceiver {
         /**
          * Create a new ResultReceive to receive results.  Your
