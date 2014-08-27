@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RemoteVideoController</string>
+    <string name="action_settings">Settings</string>
+    <string name="init_activity_title">Enter your media player host &amp; port</string>
+    <string name="init_activity_host">Host</string>
+    <string name="init_activity_port">Port</string>
+    <string name="init_activity_button_text">Connect</string>
+
+    <string name="main_activity_title">Connected to: </string>
+    <string name="main_activity_status">Status: </string>
+    <string name="main_activity_current">Now playing: </string>
+    <string name="main_activity_playback_text">Play/Pause</string>
+    <string name="main_activity_playback_prev">Prev</string>
+    <string name="main_activity_playback_next">Next</string>
+
+    <string name="service_connection_error">Unable to connect to %%s on port %%S</string>
+    <string name="service_general_error">An error has occured. Please try once again</string>
+</resources>

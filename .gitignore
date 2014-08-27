@@ -1,10 +1,7 @@
-.gradle
-/local.properties
 /.idea/workspace.xml
 .DS_Store
 .idea
 *.iml
-app/src/main/gen/
-res/
 *.log
 target/
+local.properties
