@@ -74,6 +74,11 @@ public class InitActivity extends Activity {
 
             Map<String, String> status = (HashMap)data.getSerializable(BaseService.EXTRA_RESPONSE);
 
+            if (status == null){
+                Toast.makeText(InitActivity.this, getString(R.string.general_remote_player_unavailble), Toast.LENGTH_LONG).show();
+                return;
+            }
+
             startMainActivity(status);
         }
     };

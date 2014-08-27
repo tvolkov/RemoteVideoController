@@ -12,6 +12,9 @@ import android.widget.Toast;
 import org.tvolkov.rvc.app.core.*;
 import org.tvolkov.rvc.app.util.UserSettings;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MainActivity extends Activity {
 
@@ -60,7 +63,8 @@ public class MainActivity extends Activity {
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Playing", Toast.LENGTH_SHORT).show();
+                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
+                commonActionServiceHelper.getStatus();
             }
         }
     };
@@ -72,7 +76,8 @@ public class MainActivity extends Activity {
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Paused", Toast.LENGTH_SHORT).show();
+                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
+                commonActionServiceHelper.getStatus();
             }
         }
     };
@@ -84,7 +89,8 @@ public class MainActivity extends Activity {
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Previous", Toast.LENGTH_SHORT).show();
+                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
+                commonActionServiceHelper.getStatus();
             }
         }
     };
@@ -92,11 +98,32 @@ public class MainActivity extends Activity {
     private AfterRequestHook nextRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            commonActionServiceHelper.removeAfterRequestHook(prevRequestHandler);
+            commonActionServiceHelper.removeAfterRequestHook(nextRequestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Next", Toast.LENGTH_SHORT).show();
+                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
+                commonActionServiceHelper.getStatus();
+            }
+        }
+    };
+
+
+    private AfterRequestHook statusRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+            commonActionServiceHelper.removeAfterRequestHook(statusRequestHandler);
+            if (result == ServiceResult.ERROR.ordinal()){
+                Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
+            } else {
+                Map<String, String> status = (HashMap)data.getSerializable(BaseService.EXTRA_RESPONSE);
+
+                if (status == null){
+                    Toast.makeText(MainActivity.this, getString(R.string.general_remote_player_unavailble), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                setStatus(status);
             }
         }
     };
@@ -147,16 +174,23 @@ public class MainActivity extends Activity {
         conntectedTo.setText(conntectedTo.getText() + UserSettings.getHost(this) + ":" + UserSettings.getPort(this));
         conntectedTo.invalidate();
 
-        TextView status = (TextView) findViewById(R.id.main_status);
-        status.setText(status.getText() + i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATESTRING));
-        status.invalidate();
-
-        TextView filePath = (TextView) findViewById(R.id.main_current);
-        filePath.setText(filePath.getText() + i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.FILEPATH));
-        filePath.invalidate();
+        setStatus(i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATESTRING), i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.FILEPATH));
 
         String state = i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATE);
         PLAYBACK_STATE = "2".equals(state);
     }
 
+    private void setStatus(Map<String, String> status){
+        setStatus(status.get(MediaPlayerClassicRestTemplates.Variables.STATESTRING), status.get(MediaPlayerClassicRestTemplates.Variables.FILEPATH));
+    }
+
+    private void setStatus(String playbackStatus, String nowPlaying){
+        TextView tv = (TextView) findViewById(R.id.main_status);
+        tv.setText(getString(R.string.main_activity_status) + playbackStatus);
+        tv.invalidate();
+
+        tv = (TextView) findViewById(R.id.main_current);
+        tv.setText(getString(R.string.main_activity_current) + nowPlaying);
+        tv.invalidate();
+    }
 }

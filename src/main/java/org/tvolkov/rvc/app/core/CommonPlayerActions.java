@@ -3,7 +3,7 @@ package org.tvolkov.rvc.app.core;
 /**
  * An interface describes basic player interactions
  */
-public interface PlayerRestTemplate {
+public interface CommonPlayerActions {
     void playPrev();
 
     void playNext();
@@ -11,4 +11,6 @@ public interface PlayerRestTemplate {
     void pause();
 
     void play();
+
+    void status();
 }

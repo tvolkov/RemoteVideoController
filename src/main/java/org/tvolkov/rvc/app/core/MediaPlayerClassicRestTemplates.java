@@ -21,7 +21,6 @@ public class MediaPlayerClassicRestTemplates {
     public static Bundle getStatus(final String host, final String port) throws IOException {
         Bundle result = new Bundle();
         final String url = "http://" + host + ":" + port + "/variables.html";
-        //String response = SimpleHttpClient.getResponse(url, null);
         Document response = Jsoup.connect(url).get();
 
         Map<String, String> responseData = new HashMap<String, String>();

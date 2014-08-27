@@ -8,6 +8,8 @@ import java.util.concurrent.Executors;
 
 abstract public class BaseService extends IntentService {
 
+    private static final int MAX_THREADS = 5;
+
     public static final String SERVICE_ACTION = "org.tvolkov.rvc.SERVICE_ACTION";
 
     public static final int SERVICE_ACTION_GET_STATUS = 0;
@@ -19,26 +21,13 @@ abstract public class BaseService extends IntentService {
 
     public static final String EXTRA_HOST = "org.tvolkov.rvc.app.HOST";
     public static final String EXTRA_PORT = "org.tvolkov.rvc.app.PORT";
-
-
-    private static final int MAX_THREADS = 5;
     public static final String EXTRA_REQUEST_ID = "org.tvolkov.rvc.app.REQUEST_ID";
     public static final String EXTRA_RECEIVER = "org.tvolkov.rvc.app.RECEIVER";
     public static final String EXTRA_STATUS_DATA = "org.tvolkov.rvc.app.STATUS_DATA";
     public static final String EXTRA_RESPONSE = "org.tvolkov.rvc.app.RESPONSE";
-
     public static final String EXTRA_SERVICE_STATUS = "org.tvolkov.rvc.app.SERVICE_STATUS";
 
     private ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREADS);
-
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public BaseService(String name) {
-        super(name);
-    }
 
     public BaseService(){
         super("");

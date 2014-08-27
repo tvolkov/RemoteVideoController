@@ -11,6 +11,8 @@ public class UserSettings {
     private static final String SHARED_PREFS_HOST = "host";
     private static final String SHARED_PREFS_PORT = "port";
 
+
+
     public static String getHost(final Context context) {
         final SharedPreferences sharedPrefs = context.getSharedPreferences(SHARED_PREFS_FILENAME, Context.MODE_PRIVATE);
         return sharedPrefs.getString(SHARED_PREFS_HOST, null);

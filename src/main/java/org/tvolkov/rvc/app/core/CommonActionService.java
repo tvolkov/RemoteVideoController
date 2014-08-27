@@ -5,23 +5,9 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import org.tvolkov.rvc.app.R;
 
-import javax.print.attribute.standard.Media;
-import java.io.IOException;
 import java.util.Formatter;
 
 public class CommonActionService extends BaseService {
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public CommonActionService(String name) {
-        super(name);
-    }
-
-    public CommonActionService(){
-
-    }
 
     @Override
     protected void onHandleIntent(final Intent intent) {
@@ -33,40 +19,32 @@ public class CommonActionService extends BaseService {
         try {
             switch (action) {
                 case SERVICE_ACTION_GET_STATUS:
-                    //result = VlcPlayerRestTemplates.getStatus(host, port);
                     result = MediaPlayerClassicRestTemplates.getStatus(host, port);
-                    handleSuccess(result, intent);
+                    succeed(result, intent);
                     break;
                 case SERVICE_ACTION_GET_PLAYLIST:
                 case SERVICE_ACTION_PLAY_NEXT:
                     result = MediaPlayerClassicRestTemplates.playNext(host, port);
-                    handleSuccess(result, intent);
+                    succeed(result, intent);
                     break;
                 case SERVICE_ACTION_PLAY_PREV:
                     result = MediaPlayerClassicRestTemplates.playPrev(host, port);
-                    handleSuccess(result, intent);
+                    succeed(result, intent);
                     break;
                 case SERVICE_ACTION_PAUSE:
                     result = MediaPlayerClassicRestTemplates.pause(host, port);
-                    handleSuccess(result, intent);
+                    succeed(result, intent);
                     break;
                 case SERVICE_ACTION_PLAY:
                     result = MediaPlayerClassicRestTemplates.play(host, port);
-                    handleSuccess(result, intent);
+                    succeed(result, intent);
                     break;
                 default:
             }
-        } /*catch (IOException e){
-            result.putString(BaseService.EXTRA_SERVICE_STATUS, createConnectionErrorMessage(host, port));
-            handleError(result, intent);
-        }*/ catch (Throwable t){
+        } catch (Throwable t){
             result.putString(BaseService.EXTRA_SERVICE_STATUS, createGeneralErrorMessage(host, port));
-            handleError(result, intent);
+            fail(result, intent);
         }
-    }
-
-    private String createConnectionErrorMessage(String host, String port){
-        return createErrorMessage(R.string.service_connection_error, host, port);
     }
 
     private String createGeneralErrorMessage(String host, String port){
@@ -79,11 +57,11 @@ public class CommonActionService extends BaseService {
         return formatter.toString();
     }
 
-    private void handleSuccess(final Bundle result, final Intent intent) {
+    private void succeed(final Bundle result, final Intent intent) {
         handleResult(result, intent, ServiceResult.SUCCESS.ordinal());
     }
 
-    private void handleError(final Bundle result, final Intent intent){
+    private void fail(final Bundle result, final Intent intent){
         handleResult(result, intent, ServiceResult.ERROR.ordinal());
     }
 
