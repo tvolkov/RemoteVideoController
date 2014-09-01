@@ -39,57 +39,64 @@ tools:context="org.tvolkov.rvc.app.MainActivity">
         android:orientation="horizontal">
 
         <Button
-                android:id="@+id/main_prev"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/main_activity_playback_prev"/>
-        <Button
-                android:id="@+id/main_next"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/main_activity_playback_next"/>
-    </LinearLayout>
-    <LinearLayout
-            android:id="@+id/main_audiotrack_layout"
+            android:id="@+id/main_prev"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/main_prevnext_layout"
-            android:orientation="horizontal">
-
+            android:layout_weight="1"
+            android:text="@string/main_activity_playback_prev"/>
         <Button
-                android:id="@+id/main_prev_audiotrack"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/main_activity_audio_prev"/>
-        <Button
-                android:id="@+id/main_next_audiotrack"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/main_activity_audio_next"/>
-    </LinearLayout>
-    <LinearLayout
-            android:id="@+id/main_volume_layout"
+            android:id="@+id/main_next"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/main_audiotrack_layout"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:text="@string/main_activity_playback_next"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/main_audiotrack_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_prevnext_layout"
+        android:orientation="horizontal">
 
         <Button
-                android:id="@+id/main_volume_up"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/main_activity_volume_up"/>
+            android:id="@+id/main_prev_audiotrack"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_activity_audio_prev"/>
         <Button
-                android:id="@+id/main_volume_down"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/main_activity_volume_down"/>
+            android:id="@+id/main_next_audiotrack"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_activity_audio_next"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/main_volume_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_audiotrack_layout"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/main_volume_up"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_activity_volume_up"/>
+        <Button
+            android:id="@+id/main_volume_down"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_activity_volume_down"/>
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/main_shutdown_pc_on_stop"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_activity_shutdown_pc_on_stop"
+        android:layout_below="@+id/main_volume_layout"/>
 
 </RelativeLayout>

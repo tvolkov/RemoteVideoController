@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.tvolkov.rvc.app.core.*;
@@ -22,7 +23,7 @@ public class MainActivity extends Activity {
 
     private CommonActionServiceHelper commonActionServiceHelper;
 
-    private static boolean PLAYBACK_STATE = false;//true = playing, false=paused
+    private boolean playbackState = false;//true = playing, false=paused
 
     private Object lock = new Object();
 
@@ -31,12 +32,12 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View view) {
             synchronized (lock) {
-                if (PLAYBACK_STATE){//we want to pause it
+                if (playbackState){//we want to pause it
                     commonActionServiceHelper.pause(pauseRequestHandler);
                 } else {//resume playing
                     commonActionServiceHelper.play(playRequestHandler);
                 }
-                PLAYBACK_STATE = !PLAYBACK_STATE;
+                playbackState = !playbackState;
             }
         }
     };
@@ -85,6 +86,21 @@ public class MainActivity extends Activity {
             commonActionServiceHelper.volumeDown(volumeDownRequestHandler);
         }
     };
+
+    private OnClickListener shutdownPcListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            boolean shutdownPcOnStop = ((CheckBox) view).isChecked();
+            if (shutdownPcOnStop){
+                commonActionServiceHelper.shutdownPcOnStop(shutdownPcOnStopRequestHandler);
+            } else {
+                commonActionServiceHelper.doNothingOnStop(doNothingRequestHandler);
+            }
+            shutdownPcOnStop = !shutdownPcOnStop;
+        }
+    };
+
+
 
     //-------------------------------------------------------------------
 
@@ -173,14 +189,28 @@ public class MainActivity extends Activity {
     private AfterRequestHook volumeUpRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-
+            //TODO show volume level
         }
     };
 
     private AfterRequestHook volumeDownRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
+            //TODO show volume level
+        }
+    };
 
+    private AfterRequestHook shutdownPcOnStopRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+            //TODO show volume level
+        }
+    };
+
+    private AfterRequestHook doNothingRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+            //TODO show volume level
         }
     };
 
@@ -212,6 +242,9 @@ public class MainActivity extends Activity {
 
         Button volumeDown = (Button) findViewById(R.id.main_volume_down);
         volumeDown.setOnClickListener(volumeDownListener);
+
+        CheckBox shutdownPc = (CheckBox) findViewById(R.id.main_shutdown_pc_on_stop);
+        shutdownPc.setOnClickListener(shutdownPcListener);
 
         setStatus();
     }
@@ -245,7 +278,7 @@ public class MainActivity extends Activity {
         setStatus(i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATESTRING), i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.FILEPATH));
 
         String state = i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATE);
-        PLAYBACK_STATE = "2".equals(state);
+        playbackState = "2".equals(state);
     }
 
     private void setStatus(Map<String, String> status){

@@ -20,6 +20,7 @@
     <string name="main_activity_volume_down">Volume -</string>
     <string name="main_activity_audio_next">Next audio track</string>
     <string name="main_activity_audio_prev">Prev audio track</string>
+    <string name="main_activity_shutdown_pc_on_stop">Shutdown PC on stop</string>
 
     <string name="service_connection_error">Unable to connect to %%s on port %%S</string>
     <string name="service_general_error">An error has occured. Please try once again</string>

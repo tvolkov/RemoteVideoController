@@ -55,6 +55,14 @@ public class CommonActionService extends BaseService {
                     result = MediaPlayerClassicRestTemplates.volumeDown(host, port);
                     succeed(result, intent);
                     break;
+                case SERVICE_ACTION_SHUTDOWN_PC_ON_STOP:
+                    result = MediaPlayerClassicRestTemplates.shutdownPcOnStop(host, port);
+                    succeed(result, intent);
+                    break;
+                case SERVICE_ACTION_DO_NOTHING_ON_STOP:
+                    result = MediaPlayerClassicRestTemplates.doNothingOnStop(host, port);
+                    succeed(result, intent);
+                    break;
                 default:
             }
         } catch (Throwable t){

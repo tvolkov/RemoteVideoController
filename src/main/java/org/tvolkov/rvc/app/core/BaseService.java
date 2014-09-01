@@ -22,6 +22,8 @@ abstract public class BaseService extends IntentService {
     public static final int SERVICE_ACTION_NEXT_AUDIO = 7;
     public static final int SERVICE_ACTION_VOLUME_UP = 8;
     public static final int SERVICE_ACTION_VOLUME_DOWN = 9;
+    public static final int SERVICE_ACTION_SHUTDOWN_PC_ON_STOP = 10;
+    public static final int SERVICE_ACTION_DO_NOTHING_ON_STOP = 11;
 
     public static final String EXTRA_HOST = "org.tvolkov.rvc.app.HOST";
     public static final String EXTRA_PORT = "org.tvolkov.rvc.app.PORT";

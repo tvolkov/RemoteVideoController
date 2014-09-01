@@ -110,6 +110,24 @@ public class CommonActionServiceHelper {
         return doAction(CommonActionService.SERVICE_ACTION_VOLUME_DOWN);
     }
 
+    public int shutdownPcOnStop(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return shutdownPcOnStop();
+    }
+
+    private int shutdownPcOnStop(){
+        return doAction(CommonActionService.SERVICE_ACTION_SHUTDOWN_PC_ON_STOP);
+    }
+
+    public int doNothingOnStop(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return doNotingOnStop();
+    }
+
+    private int doNotingOnStop(){
+        return doAction(CommonActionService.SERVICE_ACTION_DO_NOTHING_ON_STOP);
+    }
+
     private int doAction(int action){
         final int requestId = random.nextInt(MAX_REQUEST_ID);
         Intent intent = prepareIntent();

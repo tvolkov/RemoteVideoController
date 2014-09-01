@@ -110,6 +110,25 @@ public class MediaPlayerClassicRestTemplates {
         return result;
     }
 
+    //915
+    public static Bundle shutdownPcOnStop(final String host, final String port) throws IOException {
+        Bundle result = new Bundle();
+        final String url = "http://" + host + ":" + port + "/command.html?wm_command=915";
+        String response = SimpleHttpClient.getResponse(url, null);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
+        return result;
+    }
+    //918
+    public static Bundle doNothingOnStop(final String host, final String port) throws IOException {
+        Bundle result = new Bundle();
+        final String url = "http://" + host + ":" + port + "/command.html?wm_command=908";
+        String response = SimpleHttpClient.getResponse(url, null);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
+        return result;
+    }
+
     public static class Variables{
 /*        public String filepatharg;
         public String filepath;

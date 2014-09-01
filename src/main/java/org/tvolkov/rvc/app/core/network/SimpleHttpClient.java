@@ -67,7 +67,6 @@ public class SimpleHttpClient {
 
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() != HttpStatus.SC_OK){
-                //TODO need to handle 302 response here, i.e. to do redirect
                 throw new Exception(status.toString());
             }
 
