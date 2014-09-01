@@ -14,7 +14,7 @@ import org.tvolkov.rvc.app.util.UserSettings;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import static android.view.View.OnClickListener;
 
 public class MainActivity extends Activity {
 
@@ -24,47 +24,78 @@ public class MainActivity extends Activity {
 
     private static boolean PLAYBACK_STATE = false;//true = playing, false=paused
 
-    private Button.OnClickListener playPauseListener = new Button.OnClickListener() {
+    private Object lock = new Object();
+
+    private OnClickListener playPauseListener = new OnClickListener() {
+
         @Override
         public void onClick(View view) {
-            if (PLAYBACK_STATE){//we want to pause it
-                commonActionServiceHelper.addAfterRequestHook(pauseRequestHandler);
-                commonActionServiceHelper.pause();
-            } else {//resume playing
-                commonActionServiceHelper.addAfterRequestHook(playRequestHandler);
-                commonActionServiceHelper.play();
+            synchronized (lock) {
+                if (PLAYBACK_STATE){//we want to pause it
+                    commonActionServiceHelper.pause(pauseRequestHandler);
+                } else {//resume playing
+                    commonActionServiceHelper.play(playRequestHandler);
+                }
+                PLAYBACK_STATE = !PLAYBACK_STATE;
             }
-            PLAYBACK_STATE = !PLAYBACK_STATE;
         }
     };
 
-    private Button.OnClickListener prevListener = new Button.OnClickListener(){
+    private OnClickListener prevListener = new OnClickListener(){
 
         @Override
         public void onClick(View view) {
-            commonActionServiceHelper.addAfterRequestHook(prevRequestHandler);
-            commonActionServiceHelper.playPrev();
+            commonActionServiceHelper.playPrev(prevRequestHandler);
         }
     };
 
-    private Button.OnClickListener nextListener = new Button.OnClickListener(){
+    private OnClickListener nextListener = new OnClickListener(){
 
         @Override
         public void onClick(View view) {
-            commonActionServiceHelper.addAfterRequestHook(nextRequestHandler);
-            commonActionServiceHelper.playNext();
+            commonActionServiceHelper.playNext(nextRequestHandler);
         }
     };
+
+
+    private OnClickListener prevAudioListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            commonActionServiceHelper.prevAudio(prevAudioRequestHandler);
+        }
+    };
+
+    private OnClickListener nextAudioListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            commonActionServiceHelper.nextAudio(nextAudioRequestHandler);
+        }
+    };
+
+    private OnClickListener volumeUpListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            commonActionServiceHelper.volumeUp(volumeUpRequestHandler);
+        }
+    };
+
+    private OnClickListener volumeDownListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            commonActionServiceHelper.volumeDown(volumeDownRequestHandler);
+        }
+    };
+
+    //-------------------------------------------------------------------
 
     private AfterRequestHook playRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            commonActionServiceHelper.removeAfterRequestHook(playRequestHandler);
+            //commonActionServiceHelper.removeAfterRequestHook(playRequestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
-                commonActionServiceHelper.getStatus();
+                statusRequestHandler.afterRequest(requestId, result, data);
             }
         }
     };
@@ -72,12 +103,11 @@ public class MainActivity extends Activity {
     private AfterRequestHook pauseRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            commonActionServiceHelper.removeAfterRequestHook(pauseRequestHandler);
+            //commonActionServiceHelper.removeAfterRequestHook(pauseRequestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
-                commonActionServiceHelper.getStatus();
+                statusRequestHandler.afterRequest(requestId, result, data);
             }
         }
     };
@@ -85,12 +115,11 @@ public class MainActivity extends Activity {
     private AfterRequestHook prevRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            commonActionServiceHelper.removeAfterRequestHook(prevRequestHandler);
+            //commonActionServiceHelper.removeAfterRequestHook(prevRequestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
-                commonActionServiceHelper.getStatus();
+                statusRequestHandler.afterRequest(requestId, result, data);
             }
         }
     };
@@ -98,12 +127,11 @@ public class MainActivity extends Activity {
     private AfterRequestHook nextRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            commonActionServiceHelper.removeAfterRequestHook(nextRequestHandler);
+            //commonActionServiceHelper.removeAfterRequestHook(nextRequestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                commonActionServiceHelper.addAfterRequestHook(statusRequestHandler);
-                commonActionServiceHelper.getStatus();
+                statusRequestHandler.afterRequest(requestId, result, data);
             }
         }
     };
@@ -112,11 +140,11 @@ public class MainActivity extends Activity {
     private AfterRequestHook statusRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            commonActionServiceHelper.removeAfterRequestHook(statusRequestHandler);
+            //commonActionServiceHelper.removeAfterRequestHook(statusRequestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
-                Map<String, String> status = (HashMap)data.getSerializable(BaseService.EXTRA_RESPONSE);
+                Map<String, String> status = (HashMap)data.getSerializable(BaseService.EXTRA_RESPONSE_MAP);
 
                 if (status == null){
                     Toast.makeText(MainActivity.this, getString(R.string.general_remote_player_unavailble), Toast.LENGTH_LONG).show();
@@ -125,6 +153,34 @@ public class MainActivity extends Activity {
 
                 setStatus(status);
             }
+        }
+    };
+
+    private AfterRequestHook prevAudioRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+
+        }
+    };
+
+    private AfterRequestHook nextAudioRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+
+        }
+    };
+
+    private AfterRequestHook volumeUpRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+
+        }
+    };
+
+    private AfterRequestHook volumeDownRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+
         }
     };
 
@@ -144,6 +200,18 @@ public class MainActivity extends Activity {
 
         Button next = (Button) findViewById(R.id.main_next);
         next.setOnClickListener(nextListener);
+
+        Button prevAudio = (Button) findViewById(R.id.main_prev_audiotrack);
+        prevAudio.setOnClickListener(prevAudioListener);
+
+        Button nextAudio = (Button) findViewById(R.id.main_next_audiotrack);
+        nextAudio.setOnClickListener(nextAudioListener);
+
+        Button volumeUp = (Button) findViewById(R.id.main_volume_up);
+        volumeUp.setOnClickListener(volumeUpListener);
+
+        Button volumeDown = (Button) findViewById(R.id.main_volume_down);
+        volumeDown.setOnClickListener(volumeDownListener);
 
         setStatus();
     }
@@ -170,9 +238,9 @@ public class MainActivity extends Activity {
 
     private void setStatus(){
         Intent i = getIntent();
-        TextView conntectedTo = (TextView) findViewById(R.id.main_connected);
-        conntectedTo.setText(conntectedTo.getText() + UserSettings.getHost(this) + ":" + UserSettings.getPort(this));
-        conntectedTo.invalidate();
+        TextView connectedTo = (TextView) findViewById(R.id.main_connected);
+        connectedTo.setText(connectedTo.getText() + UserSettings.getHost(this) + ":" + UserSettings.getPort(this));
+        connectedTo.invalidate();
 
         setStatus(i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATESTRING), i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.FILEPATH));
 

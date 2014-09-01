@@ -39,6 +39,22 @@ public class CommonActionService extends BaseService {
                     result = MediaPlayerClassicRestTemplates.play(host, port);
                     succeed(result, intent);
                     break;
+                case SERVICE_ACTION_PREV_AUDIO:
+                    result = MediaPlayerClassicRestTemplates.prevAudio(host, port);
+                    succeed(result, intent);
+                    break;
+                case SERVICE_ACTION_NEXT_AUDIO:
+                    result = MediaPlayerClassicRestTemplates.nextAudio(host, port);
+                    succeed(result, intent);
+                    break;
+                case SERVICE_ACTION_VOLUME_UP:
+                    result = MediaPlayerClassicRestTemplates.volumeUp(host, port);
+                    succeed(result, intent);
+                    break;
+                case SERVICE_ACTION_VOLUME_DOWN:
+                    result = MediaPlayerClassicRestTemplates.volumeDown(host, port);
+                    succeed(result, intent);
+                    break;
                 default:
             }
         } catch (Throwable t){

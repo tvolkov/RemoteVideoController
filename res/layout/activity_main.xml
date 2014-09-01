@@ -32,6 +32,7 @@ tools:context="org.tvolkov.rvc.app.MainActivity">
         android:layout_below="@+id/main_current"
         android:text="@string/main_activity_playback_text"/>
     <LinearLayout
+        android:id="@+id/main_prevnext_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/main_playback_button"
@@ -49,6 +50,46 @@ tools:context="org.tvolkov.rvc.app.MainActivity">
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/main_activity_playback_next"/>
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/main_audiotrack_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_prevnext_layout"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/main_prev_audiotrack"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/main_activity_audio_prev"/>
+        <Button
+                android:id="@+id/main_next_audiotrack"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/main_activity_audio_next"/>
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/main_volume_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_audiotrack_layout"
+            android:orientation="vertical">
+
+        <Button
+                android:id="@+id/main_volume_up"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/main_activity_volume_up"/>
+        <Button
+                android:id="@+id/main_volume_down"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/main_activity_volume_down"/>
     </LinearLayout>
 
 </RelativeLayout>

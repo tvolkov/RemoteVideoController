@@ -20,48 +20,93 @@ import java.util.Map;
 public class MediaPlayerClassicRestTemplates {
     public static Bundle getStatus(final String host, final String port) throws IOException {
         Bundle result = new Bundle();
+        Map<String, String> responseData = getStatusData(host, port);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable)responseData);
+        return result;
+    }
+
+    private static Map<String, String> getStatusData(final String host, final String port) throws IOException {
         final String url = "http://" + host + ":" + port + "/variables.html";
         Document response = Jsoup.connect(url).get();
-
         Map<String, String> responseData = new HashMap<String, String>();
         Elements elements = response.select("p");
         for (Element element : elements){
             responseData.put(element.attr("id"), element.text());
         }
-
-        result.putSerializable(BaseService.EXTRA_RESPONSE, (Serializable)responseData);
-        return result;
+        return responseData;
     }
 
-    public static Bundle playPrev(final String host, final String port){
+    public static Bundle playPrev(final String host, final String port) throws IOException {
         Bundle result = new Bundle();
         final String url = "http://" + host + ":" + port + "/command.html?wm_command=919";
         String response = SimpleHttpClient.getResponse(url, null);
-        result.putString(BaseService.EXTRA_RESPONSE, response);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
         return result;
     }
 
-    public static Bundle playNext(final String host, final String port){
+    public static Bundle playNext(final String host, final String port) throws IOException {
         Bundle result = new Bundle();
         final String url = "http://" + host + ":" + port + "/command.html?wm_command=920";
         String response = SimpleHttpClient.getResponse(url, null);
-        result.putString(BaseService.EXTRA_RESPONSE, response);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
         return result;
     }
 
-    public static Bundle play(final String host, final String port){
+    public static Bundle play(final String host, final String port) throws IOException {
         Bundle result = new Bundle();
         final String url = "http://" + host + ":" + port + "/command.html?wm_command=887";
         String response = SimpleHttpClient.getResponse(url, null);
-        result.putString(BaseService.EXTRA_RESPONSE, response);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
         return result;
     }
 
-    public static Bundle pause(final String host, final String port) {
+    public static Bundle pause(final String host, final String port) throws IOException {
         Bundle result = new Bundle();
         final String url = "http://" + host + ":" + port + "/command.html?wm_command=888";
         String response = SimpleHttpClient.getResponse(url, null);
-        result.putString(BaseService.EXTRA_RESPONSE, response);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
+        return result;
+    }
+
+    //953
+    public static Bundle prevAudio(final String host, final String port) throws IOException {
+        Bundle result = new Bundle();
+        final String url = "http://" + host + ":" + port + "/command.html?wm_command=953";
+        String response = SimpleHttpClient.getResponse(url, null);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
+        return result;
+    }
+
+    //952
+    public static Bundle nextAudio(final String host, final String port) throws IOException {
+        Bundle result = new Bundle();
+        final String url = "http://" + host + ":" + port + "/command.html?wm_command=952";
+        String response = SimpleHttpClient.getResponse(url, null);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
+        return result;
+    }
+
+    public static Bundle volumeUp(final String host, final String port) throws IOException {
+        Bundle result = new Bundle();
+        final String url = "http://" + host + ":" + port + "/command.html?wm_command=907";
+        String response = SimpleHttpClient.getResponse(url, null);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
+        return result;
+    }
+
+    public static Bundle volumeDown(final String host, final String port) throws IOException {
+        Bundle result = new Bundle();
+        final String url = "http://" + host + ":" + port + "/command.html?wm_command=908";
+        String response = SimpleHttpClient.getResponse(url, null);
+        result.putString(BaseService.EXTRA_RESPONSE_STRING, response);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable) getStatusData(host, port));
         return result;
     }
 

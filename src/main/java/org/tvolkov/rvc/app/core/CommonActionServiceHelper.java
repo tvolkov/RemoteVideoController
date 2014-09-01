@@ -10,15 +10,17 @@ import android.util.SparseArray;
 import org.tvolkov.rvc.app.util.UserSettings;
 
 import java.lang.ref.WeakReference;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class CommonActionServiceHelper {
     private static final String EXTRA_REQUEST_ID = "org.tvolkov.rvc.EXTRA_REQUEST_ID";
     private static final int MAX_REQUEST_ID = 1000;
     private Random random = new Random();
     private SparseArray<Intent> processingIntents = new SparseArray<Intent>();
-    private List<WeakReference<AfterRequestHook>> listeners = new ArrayList<WeakReference<AfterRequestHook>>();
+    private final List<WeakReference<AfterRequestHook>> listeners = Collections.synchronizedList(new ArrayList<WeakReference<AfterRequestHook>>());
     private Context context;
     private CommonResultReceiver receiver;
     private static final String TAG = "CommonActionServiceHelper";
@@ -28,24 +30,84 @@ public class CommonActionServiceHelper {
         this.receiver = new CommonResultReceiver(new Handler());
     }
 
-    public int getStatus(){
+    private int getStatus(){
         return doAction(CommonActionService.SERVICE_ACTION_GET_STATUS);
     }
 
-    public int pause(){
+    public int getStatus(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return getStatus();
+    }
+
+    public int pause(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return pause();
+    }
+
+    private int pause(){
         return doAction(CommonActionService.SERVICE_ACTION_PAUSE);
     }
 
-    public int play(){
+    private int play(){
         return doAction(CommonActionService.SERVICE_ACTION_PLAY);
     }
 
-    public int playPrev(){
+    public int play(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return play();
+    }
+
+    private int playPrev(){
         return doAction(CommonActionService.SERVICE_ACTION_PLAY_PREV);
     }
 
-    public int playNext(){
+    public int playPrev(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return playPrev();
+    }
+
+    private int playNext(){
         return doAction(CommonActionService.SERVICE_ACTION_PLAY_NEXT);
+    }
+
+    public int playNext(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return playNext();
+    }
+
+    public int prevAudio(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return prevAudio();
+    }
+
+    private int prevAudio(){
+        return doAction(CommonActionService.SERVICE_ACTION_PREV_AUDIO);
+    }
+
+    public int nextAudio(AfterRequestHook hook){
+        return nextAudio();
+    }
+
+    private int nextAudio(){
+        return doAction(CommonActionService.SERVICE_ACTION_NEXT_AUDIO);
+    }
+
+    public int volumeUp(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return volumeUp();
+    }
+
+    private int volumeUp(){
+        return doAction(CommonActionService.SERVICE_ACTION_VOLUME_UP);
+    }
+
+    public int volumeDown(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return volumeDown();
+    }
+
+    private int volumeDown(){
+        return doAction(CommonActionService.SERVICE_ACTION_VOLUME_DOWN);
     }
 
     private int doAction(int action){
@@ -84,48 +146,33 @@ public class CommonActionServiceHelper {
         }
     }
 
-    public void addAfterRequestHook(final AfterRequestHook hook) {
+    private void addAfterRequestHook(final AfterRequestHook hook) {
         WeakReference<AfterRequestHook> weakRef = new WeakReference<AfterRequestHook>(hook);
-        synchronized (listeners) {
-            boolean match = false;
-            for (WeakReference<AfterRequestHook> ref : listeners){
-                if (ref.get() != null) {
-                    if (ref.get().getClass().getName().equals(hook.getClass().getName())) {
-                        match = true;
-                        break;
-                    }
+        boolean match = false;
+        for (WeakReference<AfterRequestHook> ref : listeners) {
+            if (ref.get() != null) {
+                if (ref.get().getClass().getName().equals(hook.getClass().getName())) {
+                    match = true;
+                    break;
                 }
-            }
-            if (!listeners.contains(weakRef) && !match) {
-                listeners.add(weakRef);
             }
         }
-    }
-
-    public void removeAfterRequestHook(final AfterRequestHook hook) {
-        synchronized (listeners) {
-            for (WeakReference<AfterRequestHook> ref : listeners){
-                if (ref.get() != null){
-                    if (ref.get().getClass().getName().equals(hook.getClass().getName())){
-                        listeners.remove(ref);
-                        break;
-                    }
-                }
-            }
+        if (!listeners.contains(weakRef) && !match) {
+            Log.e(TAG, "adding afterRequestHook");
+            listeners.add(weakRef);
         }
     }
 
     private void processResult(final int resultCode, final Bundle resultData) {
         final int requestId = resultData.getInt(EXTRA_REQUEST_ID);
         processingIntents.remove(requestId);
-
-        synchronized (listeners) {
-            for (WeakReference<AfterRequestHook> weakRef : listeners) {
-                if (weakRef != null) {
-                    AfterRequestHook listener = weakRef.get();
-                    if (listener != null) {
-                        listener.afterRequest(requestId, resultCode, resultData);
-                    }
+        for (WeakReference<AfterRequestHook> weakRef : listeners) {
+            if (weakRef != null) {
+                AfterRequestHook listener = weakRef.get();
+                if (listener != null) {
+                    Log.e(TAG, "notify listeners");
+                    listener.afterRequest(requestId, resultCode, resultData);
+                    listeners.remove(listener);
                 }
             }
         }

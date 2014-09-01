@@ -60,19 +60,18 @@ public class InitActivity extends Activity {
         UserSettings.setHost(this, host.getText().toString());
         UserSettings.setPort(this, port.getText().toString());
         Log.d(TAG, "adding after request hook");
-        commonActionServiceHelper.addAfterRequestHook(requestHandler);
-        commonActionServiceHelper.getStatus();
+        commonActionServiceHelper.getStatus(requestHandler);
     }
 
     private AfterRequestHook requestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            commonActionServiceHelper.removeAfterRequestHook(requestHandler);
+            //commonActionServiceHelper.removeAfterRequestHook(requestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(InitActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_LONG).show();
             }
 
-            Map<String, String> status = (HashMap)data.getSerializable(BaseService.EXTRA_RESPONSE);
+            Map<String, String> status = (HashMap)data.getSerializable(BaseService.EXTRA_RESPONSE_MAP);
 
             if (status == null){
                 Toast.makeText(InitActivity.this, getString(R.string.general_remote_player_unavailble), Toast.LENGTH_LONG).show();
