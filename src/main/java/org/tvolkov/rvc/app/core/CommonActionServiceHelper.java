@@ -30,111 +30,69 @@ public class CommonActionServiceHelper {
         this.receiver = new CommonResultReceiver(new Handler());
     }
 
-    private int getStatus(){
-        return doAction(CommonActionService.SERVICE_ACTION_GET_STATUS);
-    }
-
     public int getStatus(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return getStatus();
+        return doAction(CommonActionService.SERVICE_ACTION_GET_STATUS);
     }
 
     public int pause(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return pause();
-    }
-
-    private int pause(){
         return doAction(CommonActionService.SERVICE_ACTION_PAUSE);
-    }
-
-    private int play(){
-        return doAction(CommonActionService.SERVICE_ACTION_PLAY);
     }
 
     public int play(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return play();
+        return doAction(CommonActionService.SERVICE_ACTION_PLAY);
     }
 
     public int stop(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return stop();
-    }
-
-    private int stop(){
         return doAction(CommonActionService.SERVICE_ACTION_STOP);
-    }
-
-    private int playPrev(){
-        return doAction(CommonActionService.SERVICE_ACTION_PLAY_PREV);
     }
 
     public int playPrev(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return playPrev();
-    }
-
-    private int playNext(){
-        return doAction(CommonActionService.SERVICE_ACTION_PLAY_NEXT);
+        return doAction(CommonActionService.SERVICE_ACTION_PLAY_PREV);
     }
 
     public int playNext(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return playNext();
+        return doAction(CommonActionService.SERVICE_ACTION_PLAY_NEXT);
     }
 
     public int prevAudio(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return prevAudio();
-    }
-
-    private int prevAudio(){
         return doAction(CommonActionService.SERVICE_ACTION_PREV_AUDIO);
     }
 
     public int nextAudio(AfterRequestHook hook){
-        return nextAudio();
-    }
-
-    private int nextAudio(){
+        addAfterRequestHook(hook);
         return doAction(CommonActionService.SERVICE_ACTION_NEXT_AUDIO);
     }
 
     public int volumeUp(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return volumeUp();
-    }
-
-    private int volumeUp(){
         return doAction(CommonActionService.SERVICE_ACTION_VOLUME_UP);
     }
 
     public int volumeDown(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return volumeDown();
-    }
-
-    private int volumeDown(){
         return doAction(CommonActionService.SERVICE_ACTION_VOLUME_DOWN);
     }
 
     public int shutdownPcOnStop(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return shutdownPcOnStop();
-    }
-
-    private int shutdownPcOnStop(){
         return doAction(CommonActionService.SERVICE_ACTION_SHUTDOWN_PC_ON_STOP);
     }
 
     public int doNothingOnStop(AfterRequestHook hook){
         addAfterRequestHook(hook);
-        return doNotingOnStop();
+        return doAction(CommonActionService.SERVICE_ACTION_DO_NOTHING_ON_STOP);
     }
 
-    private int doNotingOnStop(){
-        return doAction(CommonActionService.SERVICE_ACTION_DO_NOTHING_ON_STOP);
+    public int exit(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return doAction(CommonActionService.SERVICE_ACTION_EXIT);
     }
 
     private int doAction(int action){
