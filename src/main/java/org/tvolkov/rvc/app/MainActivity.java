@@ -42,6 +42,14 @@ public class MainActivity extends Activity {
         }
     };
 
+    private OnClickListener stopListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            playbackState = false;
+            commonActionServiceHelper.stop(stopRequestHandler);
+        }
+    };
+
     private OnClickListener prevListener = new OnClickListener(){
 
         @Override
@@ -90,13 +98,12 @@ public class MainActivity extends Activity {
     private OnClickListener shutdownPcListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            boolean shutdownPcOnStop = ((CheckBox) view).isChecked();
+            final boolean shutdownPcOnStop = ((CheckBox) view).isChecked();
             if (shutdownPcOnStop){
                 commonActionServiceHelper.shutdownPcOnStop(shutdownPcOnStopRequestHandler);
             } else {
                 commonActionServiceHelper.doNothingOnStop(doNothingRequestHandler);
             }
-            shutdownPcOnStop = !shutdownPcOnStop;
         }
     };
 
@@ -107,56 +114,50 @@ public class MainActivity extends Activity {
     private AfterRequestHook playRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //commonActionServiceHelper.removeAfterRequestHook(playRequestHandler);
-            if (result == ServiceResult.ERROR.ordinal()){
-                Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
-            } else {
-                statusRequestHandler.afterRequest(requestId, result, data);
-            }
+            refreshStatus(requestId, result, data);
         }
     };
 
     private AfterRequestHook pauseRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //commonActionServiceHelper.removeAfterRequestHook(pauseRequestHandler);
-            if (result == ServiceResult.ERROR.ordinal()){
-                Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
-            } else {
-                statusRequestHandler.afterRequest(requestId, result, data);
-            }
+            refreshStatus(requestId, result, data);
+        }
+    };
+
+    private AfterRequestHook stopRequestHandler = new AfterRequestHook() {
+        @Override
+        public void afterRequest(int requestId, int result, Bundle data) {
+            refreshStatus(requestId, result, data);
         }
     };
 
     private AfterRequestHook prevRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //commonActionServiceHelper.removeAfterRequestHook(prevRequestHandler);
-            if (result == ServiceResult.ERROR.ordinal()){
-                Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
-            } else {
-                statusRequestHandler.afterRequest(requestId, result, data);
-            }
+            refreshStatus(requestId, result, data);
         }
     };
 
     private AfterRequestHook nextRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //commonActionServiceHelper.removeAfterRequestHook(nextRequestHandler);
-            if (result == ServiceResult.ERROR.ordinal()){
-                Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
-            } else {
-                statusRequestHandler.afterRequest(requestId, result, data);
-            }
+            refreshStatus(requestId, result, data);
         }
     };
+
+    private void refreshStatus(int requestId, int result, Bundle data){
+        if (result == ServiceResult.ERROR.ordinal()){
+            Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
+        } else {
+            statusRequestHandler.afterRequest(requestId, result, data);
+        }
+    }
 
 
     private AfterRequestHook statusRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //commonActionServiceHelper.removeAfterRequestHook(statusRequestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(MainActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_SHORT).show();
             } else {
@@ -222,8 +223,17 @@ public class MainActivity extends Activity {
 
         commonActionServiceHelper = new CommonActionServiceHelper(this);
 
+        initViews();
+
+        setStatus();
+    }
+
+    private void initViews(){
         Button playPause = (Button) findViewById(R.id.main_playback_button);
         playPause.setOnClickListener(playPauseListener);
+
+        Button stop = (Button) findViewById(R.id.main_playback_stop);
+        stop.setOnClickListener(stopListener);
 
         Button prev = (Button) findViewById(R.id.main_prev);
         prev.setOnClickListener(prevListener);
@@ -245,8 +255,6 @@ public class MainActivity extends Activity {
 
         CheckBox shutdownPc = (CheckBox) findViewById(R.id.main_shutdown_pc_on_stop);
         shutdownPc.setOnClickListener(shutdownPcListener);
-
-        setStatus();
     }
 
 

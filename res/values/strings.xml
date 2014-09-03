@@ -14,6 +14,7 @@
     <string name="main_activity_status">Status: </string>
     <string name="main_activity_current">Now playing: </string>
     <string name="main_activity_playback_text">Play/Pause</string>
+    <string name="main_activity_stop">Stop</string>
     <string name="main_activity_playback_prev">Prev</string>
     <string name="main_activity_playback_next">Next</string>
     <string name="main_activity_volume_up">Volume +</string>

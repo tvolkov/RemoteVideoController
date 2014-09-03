@@ -7,7 +7,8 @@ android:paddingLeft="@dimen/activity_horizontal_margin"
 android:paddingRight="@dimen/activity_horizontal_margin"
 android:paddingTop="@dimen/activity_vertical_margin"
 android:paddingBottom="@dimen/activity_vertical_margin"
-tools:context="org.tvolkov.rvc.app.MainActivity">
+tools:context="org.tvolkov.rvc.app.MainActivity"
+android:id="@+id/main_root_layout">
     <TextView
         android:id="@+id/main_connected"
         android:text="@string/main_activity_title"
@@ -25,17 +26,29 @@ tools:context="org.tvolkov.rvc.app.MainActivity">
         android:layout_height="wrap_content"
         android:text="@string/main_activity_current"
         android:layout_below="@+id/main_status"/>
-    <Button
-        android:id="@+id/main_playback_button"
+    <LinearLayout
+        android:id="@+id/main_playback_control"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/main_current"
-        android:text="@string/main_activity_playback_text"/>
+        android:layout_below="@+id/main_current">
+        <Button
+            android:id="@+id/main_playback_stop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_activity_stop"/>
+        <Button
+            android:id="@+id/main_playback_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/main_activity_playback_text"/>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/main_prevnext_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/main_playback_button"
+        android:layout_below="@+id/main_playback_control"
         android:orientation="horizontal">
 
         <Button

@@ -63,6 +63,14 @@ public class CommonActionService extends BaseService {
                     result = MediaPlayerClassicRestTemplates.doNothingOnStop(host, port);
                     succeed(result, intent);
                     break;
+                case SERVICE_ACTION_STOP:
+                    result = MediaPlayerClassicRestTemplates.stop(host, port);
+                    succeed(result, intent);
+                    break;
+                case SERVICE_ACTION_EXIT:
+                    result = MediaPlayerClassicRestTemplates.exit(host, port);
+                    succeed(result, intent);
+                    break;
                 default:
             }
         } catch (Throwable t){

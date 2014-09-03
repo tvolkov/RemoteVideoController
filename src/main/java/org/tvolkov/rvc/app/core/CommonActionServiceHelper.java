@@ -57,6 +57,15 @@ public class CommonActionServiceHelper {
         return play();
     }
 
+    public int stop(AfterRequestHook hook){
+        addAfterRequestHook(hook);
+        return stop();
+    }
+
+    private int stop(){
+        return doAction(CommonActionService.SERVICE_ACTION_STOP);
+    }
+
     private int playPrev(){
         return doAction(CommonActionService.SERVICE_ACTION_PLAY_PREV);
     }

@@ -19,13 +19,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/init_activity_port"
         android:layout_below="@+id/init_host"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/current_player"
-        android:hint="Choose player"
-        android:textSize="20px"
-        android:layout_below="@+id/init_port"/>
+    <Spinner
+        android:id="@+id/init_player_type"
+        android:layout_below="@+id/init_port"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/init_button_ok"
         android:layout_width="match_parent"
