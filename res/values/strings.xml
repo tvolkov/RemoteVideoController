@@ -8,7 +8,8 @@
     <string name="init_activity_host">Host</string>
     <string name="init_activity_port">Port</string>
     <string name="init_activity_button_text">Connect</string>
-
+    <string name="init_activity_player_prompt">Choose player</string>
+    <string name="init_activity_unable_to_connect">Network unavailable. Check your connection</string>
 
     <string name="main_activity_title">Connected to: </string>
     <string name="main_activity_status">Status: </string>

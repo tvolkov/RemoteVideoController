@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="player_types">
+        <item>Choose player:</item>
         <item>Media Player Classic</item>
         <item>VLC</item>
     </string-array>

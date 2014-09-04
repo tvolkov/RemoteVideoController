@@ -22,6 +22,11 @@ public class InitActivity extends Activity {
     private AdapterView.OnItemSelectedListener playerSelectListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0){
+                freezeButton();
+                view.setSelected(false);
+                return;
+            }
             unfreezeButton();
         }
 
@@ -73,15 +78,16 @@ public class InitActivity extends Activity {
     }
 
     private void initSpinner(){
-        Spinner playerTypes = (Spinner) findViewById(R.id.init_player_type);
+        Spinner playerTypes = (Spinner) findViewById(R.id.init_player_type_spinner);
         ArrayAdapter<CharSequence> playerTypesAdapter = ArrayAdapter.createFromResource(this, R.array.player_types, android.R.layout.simple_spinner_item);
         playerTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         playerTypes.setAdapter(playerTypesAdapter);
+        playerTypes.setOnItemSelectedListener(playerSelectListener);
     }
 
     public void connectToRemotePlayer(View view){
         if (!UserSettings.isConnectedToNetwork(this)){
-            Toast.makeText(InitActivity.this, "Network unavailable. Check your connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(InitActivity.this, getString(R.string.init_activity_unable_to_connect), Toast.LENGTH_LONG).show();
             return;
         }
         final EditText host = (EditText) findViewById(R.id.init_host);
