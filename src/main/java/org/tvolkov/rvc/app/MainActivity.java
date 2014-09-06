@@ -11,6 +11,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.tvolkov.rvc.app.core.*;
+import org.tvolkov.rvc.app.rest.MediaPlayerClassicRestClient;
+import org.tvolkov.rvc.app.rest.PlayerRestClient;
+import org.tvolkov.rvc.app.rest.RestClientProvider;
 import org.tvolkov.rvc.app.util.UserSettings;
 
 import java.util.HashMap;
@@ -283,14 +286,14 @@ public class MainActivity extends Activity {
         connectedTo.setText(connectedTo.getText() + UserSettings.getHost(this) + ":" + UserSettings.getPort(this));
         connectedTo.invalidate();
 
-        setStatus(i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATESTRING), i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.FILEPATH));
+        setStatus(i.getStringExtra(PlayerRestClient.STATESTR), i.getStringExtra(PlayerRestClient.FILE));
 
-        String state = i.getStringExtra(MediaPlayerClassicRestTemplates.Variables.STATE);
+        String state = i.getStringExtra(PlayerRestClient.STATE);
         playbackState = "2".equals(state);
     }
 
     private void setStatus(Map<String, String> status){
-        setStatus(status.get(MediaPlayerClassicRestTemplates.Variables.STATESTRING), status.get(MediaPlayerClassicRestTemplates.Variables.FILEPATH));
+        setStatus(status.get(PlayerRestClient.STATESTR), status.get(PlayerRestClient.FILE));
     }
 
     private void setStatus(String playbackStatus, String nowPlaying){

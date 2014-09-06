@@ -1,6 +1,7 @@
-package org.tvolkov.rvc.app.core.network;
+package org.tvolkov.rvc.app.network;
 
 import android.net.http.AndroidHttpClient;
+import android.util.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -18,6 +19,8 @@ public class SimpleHttpClient {
 
     private static final String UTF8 = "UTF-8";
 
+    private static final String ERROR401 = "HTTP/1.0 401 Unauthorized";
+
     private enum HttpMethod {
         GET,
         POST,
@@ -28,10 +31,14 @@ public class SimpleHttpClient {
     private SimpleHttpClient(){}
 
     public static String getResponse(final String url, final Map<String, String> params) {
-        return getResponse(url, params, HttpMethod.GET);
+        return getResponse(url, params, HttpMethod.GET, null, null);
     }
 
-    public static String getResponse(final String url, final Map<String, String> params, final HttpMethod method) {
+    public static String getResponse(final String url, final Map<String, String> params, final String login, final String password) {
+        return getResponse(url, params, HttpMethod.GET, login, password);
+    }
+
+    public static String getResponse(final String url, final Map<String, String> params, final HttpMethod method, final String login, final String password) {
         if (url == null){
             throw new IllegalArgumentException("url cannot be null");
         }
@@ -61,6 +68,10 @@ public class SimpleHttpClient {
                 request = new HttpGet(uri);
             }
 
+            if (login != null && password != null){
+                request.addHeader("Authorization", "Basic" + Base64.encodeToString((login + ":" + password).getBytes(), Base64.DEFAULT));
+            }
+
             String responseStr = null;
 
             HttpResponse response = httpClient.execute(request);
@@ -76,6 +87,9 @@ public class SimpleHttpClient {
 
             return responseStr;
         } catch (Exception e){
+            if (e.getMessage().equals(ERROR401)){
+                throw new UnauthorizedException(e);
+            }
             throw new RuntimeException(e.getMessage());
         } finally {
             httpClient.close();

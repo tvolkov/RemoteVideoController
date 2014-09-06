@@ -7,9 +7,12 @@
     <string name="init_activity_title">Enter your media player host &amp; port</string>
     <string name="init_activity_host">Host</string>
     <string name="init_activity_port">Port</string>
+    <string name="init_activity_login">Login</string>
+    <string name="init_activity_password">Password</string>
     <string name="init_activity_button_text">Connect</string>
     <string name="init_activity_player_prompt">Choose player</string>
     <string name="init_activity_unable_to_connect">Network unavailable. Check your connection</string>
+    <string name="init_activity_incorrect_player_type">Incorrect player type</string>
 
     <string name="main_activity_title">Connected to: </string>
     <string name="main_activity_status">Status: </string>

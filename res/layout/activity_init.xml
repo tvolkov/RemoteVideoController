@@ -19,11 +19,26 @@
         android:layout_height="wrap_content"
         android:hint="@string/init_activity_port"
         android:layout_below="@+id/init_host"/>
+    <EditText
+        android:id="@+id/init_login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/init_port"
+        android:hint="@string/init_activity_login"
+        android:visibility="gone"/>
+    <EditText
+        android:id="@+id/init_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/init_login"
+        android:hint="@string/init_activity_password"
+        android:visibility="gone"
+        android:inputType="textPassword"/>
     <Spinner
         android:id="@+id/init_player_type_spinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/init_port"/>
+        android:layout_below="@+id/init_password"/>
     <Button
         android:id="@+id/init_button_ok"
         android:layout_width="match_parent"

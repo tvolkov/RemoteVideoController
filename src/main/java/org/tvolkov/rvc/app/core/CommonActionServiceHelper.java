@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.util.SparseArray;
+import org.tvolkov.rvc.app.rest.Endpoint;
 import org.tvolkov.rvc.app.util.UserSettings;
 
 import java.lang.ref.WeakReference;
@@ -107,8 +108,7 @@ public class CommonActionServiceHelper {
 
     private Intent prepareIntent(){
         Intent intent = new Intent(context, CommonActionService.class);
-        intent.putExtra(BaseService.EXTRA_HOST, UserSettings.getHost(context));
-        intent.putExtra(BaseService.EXTRA_PORT, UserSettings.getPort(context));
+        intent.putExtra(BaseService.EXTRA_ENDPOINT, new Endpoint(UserSettings.getHost(context), UserSettings.getPort(context), UserSettings.getLogin(context), UserSettings.getPassword(context)));;
         intent.putExtra(BaseService.EXTRA_RECEIVER, receiver);
         return intent;
     }

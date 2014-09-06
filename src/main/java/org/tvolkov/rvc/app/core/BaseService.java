@@ -27,8 +27,7 @@ abstract public class BaseService extends IntentService {
     public static final int SERVICE_ACTION_STOP = 12;
     public static final int SERVICE_ACTION_EXIT = 13;
 
-    public static final String EXTRA_HOST = "org.tvolkov.rvc.app.HOST";
-    public static final String EXTRA_PORT = "org.tvolkov.rvc.app.PORT";
+    public static final String EXTRA_ENDPOINT = "org.tvolkov.rvc.app.ENDPOINT";
     public static final String EXTRA_REQUEST_ID = "org.tvolkov.rvc.app.REQUEST_ID";
     public static final String EXTRA_RECEIVER = "org.tvolkov.rvc.app.RECEIVER";
     public static final String EXTRA_STATUS_DATA = "org.tvolkov.rvc.app.STATUS_DATA";
