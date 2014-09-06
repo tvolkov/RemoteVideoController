@@ -26,29 +26,26 @@ public class VlcPlayerRestClient implements PlayerRestClient {
     @Override
     public Bundle getStatus(final Endpoint player) {
         Bundle result = new Bundle();
-        final String url = "http://" + player.getHost() + ":" + player.getPort() + "/requests/status.json";
-        String response;
-        Status status;
-        try {
+        Map<String, String> responseData = getStatusData(player);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable)responseData);
+        return result;
+    }
 
-/*            ObjectMapper mapper = new ObjectMapper();
-            Status status = mapper.readValue(new URL(url), Status.class);
-            result.putParcelable(BaseService.EXTRA_STATUS_DATA, status);*/
-            response = SimpleHttpClient.getResponse(url, null);
+    private Map<String, String> getStatusData(final Endpoint player){
 
-        } catch (UnauthorizedException e) {
-            response = SimpleHttpClient.getResponse(url, null, player.getLogin(), player.getPassword());
-        }
+        String response = getResponse(player, null);
+        Map<String, String> responseData = new HashMap<String, String>();
+
         try {
             ObjectMapper mapper = new ObjectMapper();
             //status = mapper.readValue(response, Status.class);
             JsonNode json  = mapper.readTree(response);
-            Map<String, String> responseData = new HashMap<String, String>();
+
             responseData.put(STATESTR, String.valueOf(json.get("state")));
             responseData.put(TIME, String.valueOf(json.get("time")));
             responseData.put(LENGTH, String.valueOf(json.get("length")));
             responseData.put(FILE, String.valueOf(json.get("information").get("category").get("meta").get("filename")));
-            result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, (Serializable)responseData);
+
             if ("playing".equals(String.valueOf(json.get("state")))){
                 responseData.put(STATE, "2");
             } else if ("paused".equals(String.valueOf(json.get("state")))){
@@ -59,46 +56,61 @@ public class VlcPlayerRestClient implements PlayerRestClient {
         } catch (Exception e) {
             throw new RestClientException(e);
         }
+        return responseData;
+    }
 
-        //result.putParcelable(BaseService.EXTRA_STATUS_DATA, );
+    private String getResponse(final Endpoint endpoint, final String command){
+        String response;
+        String url = generateUrlString(endpoint, command);
+        try {
+            response = SimpleHttpClient.getResponse(url, null);
+        } catch (UnauthorizedException e) {
+            response = SimpleHttpClient.getResponse(url, null, endpoint.getLogin(), endpoint.getPassword());
+        }
+        return response;
+    }
 
-
-        return result;
+    private String generateUrlString(final Endpoint endpoint, final String command){
+        String url = "http://" + endpoint.getHost() + ":" + endpoint.getPort() + "/requests/status.json";
+        if (command != null){
+            url += "&command=" + command;
+        }
+        return url;
     }
 
     @Override
     public Bundle play(Endpoint player) {
-        return null;
+        return doRequest(player, VlcPlayerCommandCodes.PLAY);
     }
 
     @Override
     public Bundle pause(Endpoint player) {
-        return null;
+        return doRequest(player, VlcPlayerCommandCodes.PAUSE);
     }
 
     @Override
     public Bundle stop(Endpoint player) {
-        return null;
+        return doRequest(player, VlcPlayerCommandCodes.STOP);
     }
 
     @Override
     public Bundle playPrev(Endpoint player) {
-        return null;
+        return doRequest(player, VlcPlayerCommandCodes.PLAY_PREV);
     }
 
     @Override
     public Bundle playNext(Endpoint player) {
-        return null;
+        return doRequest(player, VlcPlayerCommandCodes.PLAY_NEXT);
     }
 
     @Override
     public Bundle volumeUp(Endpoint player) {
-        return null;
+        return doRequest(player, VlcPlayerCommandCodes.VOLUME_UP);
     }
 
     @Override
     public Bundle volumeDown(Endpoint player) {
-        return null;
+        return doRequest(player, VlcPlayerCommandCodes.VOLUME_DOWN);
     }
 
     @Override
@@ -126,41 +138,21 @@ public class VlcPlayerRestClient implements PlayerRestClient {
         return null;
     }
 
-/*    public Bundle getStatus1(final Endpoint player){
+    private Bundle doRequest(final Endpoint endpoint, final String command){
+        String response = getResponse(endpoint, command);
         Bundle result = new Bundle();
-        final String url = "http://" + host + ":" + port + "/requests/status.json";
-        String response = SimpleHttpClient.getResponse(url, null);
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, getResponse(endpoint, command));
         return result;
-    }*/
+    }
 
-    public static class Status implements Parcelable {
-        public int subtitledelay;
-        public String version;
-        public List<String> videoeffects;
-        public boolean random;
-        public int fullscreen;
-        public boolean repeat;
-        public int audiodelay;
-        public int rate;
-        public int apiversion;
-        public String state;
-        public String[] equalizer;
-        public List<String> audiofilters;
-        public int volume;
-        public int length;
-        public boolean loop;
-        public int time;
-        public int currentplid;
-        public int position;
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-
-        }
+    private static class VlcPlayerCommandCodes {
+        public static final String PLAY = "pl_play";
+        public static final String PAUSE = "pl_pause";
+        public static final String STOP = "pl_stop";
+        public static final String PLAY_PREV = "pl_previous";
+        public static final String PLAY_NEXT = "pl_next";
+        public static final String FULLSCREEN = "fullscreen";
+        public static final String VOLUME_UP = "volume&val=+10";
+        public static final String VOLUME_DOWN = "volume&val=-10";
     }
 }
