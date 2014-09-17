@@ -44,7 +44,13 @@ public class VlcPlayerRestClient implements PlayerRestClient {
             responseData.put(STATESTR, String.valueOf(json.get("state")));
             responseData.put(TIME, String.valueOf(json.get("time")));
             responseData.put(LENGTH, String.valueOf(json.get("length")));
-            responseData.put(FILE, String.valueOf(json.get("information").get("category").get("meta").get("filename")));
+            JsonNode information = json.get("information");
+            if (information != null){
+                responseData.put(FILE, String.valueOf(json.get("information").get("category").get("meta").get("filename")));
+            } else {
+                responseData.put(FILE, "");
+            }
+
 
             if ("playing".equals(String.valueOf(json.get("state")))){
                 responseData.put(STATE, "2");

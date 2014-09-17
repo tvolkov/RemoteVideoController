@@ -41,7 +41,7 @@ public class MediaPlayerClassicRestClient implements PlayerRestClient {
 //                responseData.put(element.attr("id"), element.text());
                 if (element.attr("id").equals("statestring")) {
                     responseData.put(STATESTR, element.text());
-                } else if (element.attr("id").equals("filapth")) {
+                } else if (element.attr("id").equals("filepath")) {
                     responseData.put(FILE, element.text());
                 } else if (element.attr("id").equals("state")){
                     responseData.put(STATE, element.text());

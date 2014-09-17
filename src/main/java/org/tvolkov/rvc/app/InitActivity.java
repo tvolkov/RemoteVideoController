@@ -29,8 +29,6 @@ public class InitActivity extends Activity {
 
     private EditText password;
 
-    private String[] playerTypesStrings;
-
     private AdapterView.OnItemSelectedListener playerSelectListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -58,9 +56,7 @@ public class InitActivity extends Activity {
         }
 
         private void checkPasswordVisibility(final int index){
-            String playerType = playerTypesStrings[index];
-
-            if ("VLC".equals(playerType)){
+            if (index == 2){//VLC
                 password.setVisibility(View.VISIBLE);
                 login.setVisibility(View.VISIBLE);
             } else {
@@ -75,7 +71,6 @@ public class InitActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         commonActionServiceHelper = new CommonActionServiceHelper(this);
-        playerTypesStrings = getResources().getStringArray(R.array.player_types);
 
         setContentView(R.layout.activity_init);
 
@@ -121,11 +116,12 @@ public class InitActivity extends Activity {
         playerTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         playerTypes.setAdapter(playerTypesAdapter);
         playerTypes.setOnItemSelectedListener(playerSelectListener);
+        playerTypes.setSelection(UserSettings.getPlayerType(this));
     }
 
     public void connectToRemotePlayer(View view){
         setRestClientProvider();
-        setPlayerType();
+        savePlayerType();
         if (!UserSettings.isConnectedToNetwork(this)){
             Toast.makeText(InitActivity.this, getString(R.string.init_activity_unable_to_connect), Toast.LENGTH_LONG).show();
             return;
@@ -142,6 +138,8 @@ public class InitActivity extends Activity {
         if (password.getVisibility() == View.VISIBLE){
             UserSettings.setPassword(this, password.getText().toString());
         }
+
+        UserSettings.setPlayerType(this, playerTypes.getSelectedItemPosition());
         Log.d(TAG, "adding after request hook");
         commonActionServiceHelper.getStatus(requestHandler);
     }
@@ -187,8 +185,7 @@ public class InitActivity extends Activity {
         }
     }
 
-    private void setPlayerType(){
-        String selectedPlayerType = playerTypesStrings[playerTypes.getSelectedItemPosition()];
-        UserSettings.setPlayerType(this, selectedPlayerType);
+    private void savePlayerType(){
+        UserSettings.setPlayerType(this, playerTypes.getSelectedItemPosition());
     }
 }

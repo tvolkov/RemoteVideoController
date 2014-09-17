@@ -22,7 +22,7 @@ import static android.view.View.OnClickListener;
 
 public class MainActivity extends Activity {
 
-    public static final String TAG = "InitActivity";
+    public static final String TAG = "MainActivity";
 
     private CommonActionServiceHelper commonActionServiceHelper;
 

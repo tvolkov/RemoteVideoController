@@ -74,15 +74,15 @@ public class UserSettings {
         return sp.getString(SHARED_PREFS_PASSWORD, null);
     }
 
-    public static void setPlayerType(final Context context, final String playerType) {
+    public static void setPlayerType(final Context context, final int playerType) {
         SharedPreferences sp = context.getSharedPreferences(SHARED_PREFS_FILENAME, 0);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(SHARED_PREFS_PASSWORD, playerType);
+        editor.putInt(SHARED_PREFS_PLAYER_TYPE, playerType);
         editor.commit();
     }
 
-    public static String getPlayerType(final Context context){
+    public static int getPlayerType(final Context context){
         SharedPreferences sp = context.getSharedPreferences(SHARED_PREFS_FILENAME, Context.MODE_PRIVATE);
-        return sp.getString(SHARED_PREFS_PASSWORD, null);
+        return sp.getInt(SHARED_PREFS_PLAYER_TYPE, 0);
     }
 }
