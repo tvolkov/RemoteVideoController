@@ -23,6 +23,7 @@
                       android:value=".InitActivity"
                   </meta-data>-->
         </activity>
+        <activity android:name=".MainPagerAcivity"/>
         <service
                 android:exported="false"
                 android:name=".core.CommonActionService"/>
