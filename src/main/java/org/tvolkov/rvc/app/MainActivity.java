@@ -110,10 +110,6 @@ public class MainActivity extends Activity {
         }
     };
 
-
-
-    //-------------------------------------------------------------------
-
     private AfterRequestHook playRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
@@ -207,14 +203,14 @@ public class MainActivity extends Activity {
     private AfterRequestHook shutdownPcOnStopRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //TODO show volume level
+            //TODO
         }
     };
 
     private AfterRequestHook doNothingRequestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //TODO show volume level
+            //TODO
         }
     };
 

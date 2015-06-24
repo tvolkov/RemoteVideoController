@@ -147,7 +147,7 @@ public class VlcPlayerRestClient implements PlayerRestClient {
     private Bundle doRequest(final Endpoint endpoint, final String command){
         String response = getResponse(endpoint, command);
         Bundle result = new Bundle();
-        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, getResponse(endpoint, command));
+        result.putSerializable(BaseService.EXTRA_RESPONSE_MAP, response);
         return result;
     }
 

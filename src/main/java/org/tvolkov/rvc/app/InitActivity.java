@@ -147,7 +147,6 @@ public class InitActivity extends Activity {
     private AfterRequestHook requestHandler = new AfterRequestHook() {
         @Override
         public void afterRequest(int requestId, int result, Bundle data) {
-            //commonActionServiceHelper.removeAfterRequestHook(requestHandler);
             if (result == ServiceResult.ERROR.ordinal()){
                 Toast.makeText(InitActivity.this, data.getString(BaseService.EXTRA_SERVICE_STATUS), Toast.LENGTH_LONG).show();
             }
@@ -174,7 +173,7 @@ public class InitActivity extends Activity {
     private void setRestClientProvider(){
         switch (playerTypes.getSelectedItemPosition()){
             case 0:
-                Toast.makeText(this, getString(R.string.init_activity_incorrect_player_type), Toast.LENGTH_SHORT);
+                Toast.makeText(this, getString(R.string.init_activity_incorrect_player_type), Toast.LENGTH_SHORT).show();
                 break;
             case 1:
                 RestClientProvider.getInstance().setRestClient(new MediaPlayerClassicRestClient());
